@@ -11,12 +11,15 @@ app.get("/ping", (req, res) => {
   return res.send("pong");
 });
 
-app.post("/perfil", async (req, res) => {
+app.post("/perfis", async (req, res) => {
   try {
     const { type, cnpj, cpf, name, mobile, phone, email, address } = req.body;
 
     if (!Object.values(ProfileType).includes(type)) {
-      return res.status(400).json({ error: "O tipo de perfil é inváldio!" });
+      return res.status(400).json({ error: "Tipo de perfil inválido!" });
+    }
+    if (!address) {
+      return res.status(400).json({ error: "Endereço é obrigatório!" });
     }
     const profile = await prisma.profile.create({
       data: {
@@ -36,23 +39,22 @@ app.post("/perfil", async (req, res) => {
     res.status(201).json(profile);
   } catch (err) {
     console.error(err);
-
-    res.status(400).json({ error: "Erro ao cadastrar perfil!" });
+    res.status(500).json({ error: "Erro ao cadastrar perfil!" });
   }
 });
 
-app.get("/perfil", async (req, res) => {
+app.get("/perfis", async (req, res) => {
   try {
     const profiles = await prisma.profile.findMany({
       include: { address: true },
     });
     res.status(200).json(profiles);
   } catch (err) {
-    res.status(400).json({ error: "Erro ao listar perfis!" });
+    res.status(500).json({ error: "Erro ao listar perfis!" });
   }
 });
 
-app.get("/perfil/:id", async (req, res) => {
+app.get("/perfis/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const profile = await prisma.profile.findUnique({
@@ -65,14 +67,18 @@ app.get("/perfil/:id", async (req, res) => {
 
     res.status(200).json(profile);
   } catch (err) {
-    res.status(400).json({ error: "Erro ao buscar perfil!" });
+    res.status(500).json({ error: "Erro ao buscar perfil!" });
   }
 });
 
-app.put("/perfil/:id", async (req, res) => {
+app.put("/perfis/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const { type, cnpj, cpf, name, mobile, phone, email, address } = req.body;
+
+    if (type && !Object.values(ProfileType).includes(type)) {
+      return res.status(400).json({ error: "Tipo de perfil inválido!" });
+    }
 
     const profile = await prisma.profile.update({
       where: { id },
@@ -84,20 +90,18 @@ app.put("/perfil/:id", async (req, res) => {
         mobile,
         phone,
         email,
-        address: {
-          update: address,
-        },
+        address: address ? { update: address } : undefined,
       },
       include: { address: true },
     });
 
     res.status(200).json(profile);
   } catch (err) {
-    res.status(400).json({ error: "Erro ao atualizar perfil!" });
+    res.status(500).json({ error: "Erro ao atualizar perfil!" });
   }
 });
 
-app.delete("/perfil/:id", async (req, res) => {
+app.delete("/perfis/:id", async (req, res) => {
   try {
     const { id } = req.params;
     await prisma.profile.delete({
@@ -105,7 +109,7 @@ app.delete("/perfil/:id", async (req, res) => {
     });
     res.status(204).send();
   } catch (err) {
-    res.status(400).json({ error: "Erro ao deletar perfil!" });
+    res.status(500).json({ error: "Erro ao deletar perfil!" });
   }
 });
 
