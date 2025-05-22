@@ -1,0 +1,38 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum ProfileType {
+  INDIVIDUAL
+  COMPANY
+}
+
+model Address {
+  id         String  @id @default(uuid())
+  zipCode    String
+  street     String
+  number     String
+  complement String?
+  city       String
+  district   String
+  state      String
+  profileId  String  @unique
+  profile    Profile @relation(fields: [profileId], references: [id])
+}
+
+model Profile {
+  id      String      @id @default(uuid())
+  type    ProfileType
+  cnpj    String?
+  cpf     String?
+  name    String
+  mobile  String?
+  phone   String?
+  email   String
+  address Address?
+}
