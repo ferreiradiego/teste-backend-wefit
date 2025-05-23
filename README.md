@@ -66,11 +66,6 @@ Bem-vindo ao repositório da solução do desafio backend da WeFit! Aqui você e
 
 - Utilize o endpoint `/ping` para verificar se a API está no ar.
 - Todos os endpoints de perfis estão documentados no Swagger.
-- Para testar via terminal, utilize ferramentas como [HTTPie](https://httpie.io/) ou [curl](https://curl.se/):
-
-```sh
-http POST http://localhost:4568/perfis type=INDIVIDUAL name="João" email="joao@email.com" address:='{"zipCode":"12345678","street":"Rua A","number":"10","city":"SP","district":"Centro","state":"SP"}'
-```
 
 ## 📚 Endpoints principais
 
