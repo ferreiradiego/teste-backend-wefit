@@ -22,7 +22,7 @@ model Address {
   district   String
   state      String
   profileId  String  @unique
-  profile    Profile @relation(fields: [profileId], references: [id])
+  profile    Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
 }
 
 model Profile {
