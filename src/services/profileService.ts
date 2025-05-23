@@ -1,12 +1,15 @@
-import { ProfileType } from "@prisma/client";
+import { ProfileDTO } from "dto/profile.dto";
 import type { z } from "zod";
 import { prisma } from "../database";
-import { profileCreateSchema } from "../schemas/profileSchema";
+import {
+  profileCreateSchema,
+  type profileUpdateSchema,
+} from "../schemas/profileSchema";
 
 export const createProfile = async (
   data: z.infer<typeof profileCreateSchema>
 ) => {
-  return prisma.profile.create({
+  const profile = await prisma.profile.create({
     data: {
       ...data,
       address: {
@@ -15,10 +18,16 @@ export const createProfile = async (
     },
     include: { address: true },
   });
+
+  return new ProfileDTO(profile);
 };
 
 export const listProfiles = async () => {
-  return prisma.profile.findMany({ include: { address: true } });
+  const profiles = await prisma.profile.findMany({
+    include: { address: true },
+  });
+
+  return profiles.map((profile) => new ProfileDTO(profile));
 };
 
 export const getProfileById = async (id: string) => {
@@ -26,19 +35,34 @@ export const getProfileById = async (id: string) => {
     where: { id },
     include: { address: true },
   });
+
   if (!profile) throw { status: 404, message: "Perfil não encontrado!" };
-  return profile;
+
+  return new ProfileDTO(profile);
 };
 
-export const updateProfile = async (id: string, data: any) => {
-  return prisma.profile.update({
+export const updateProfile = async (
+  id: string,
+  data: z.infer<typeof profileUpdateSchema>
+) => {
+  let addressUpdate = undefined;
+  if (data.address) {
+    const { profileId, ...addressFields } = data.address;
+    addressUpdate = { update: addressFields };
+  }
+
+  const { id: profileId, address, ...profileFields } = data;
+
+  const profile = await prisma.profile.update({
     where: { id },
     data: {
-      ...data,
-      address: data.address ? { update: data.address } : undefined,
+      ...profileFields,
+      address: addressUpdate,
     },
     include: { address: true },
   });
+
+  return new ProfileDTO(profile);
 };
 
 export const deleteProfile = async (id: string) => {

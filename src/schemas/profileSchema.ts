@@ -16,7 +16,7 @@ export const addressSchema = z.object({
       required_error: "Número é obrigatório",
     })
     .min(1, "Número é obrigatório"),
-  complement: z.string().optional(),
+  complement: z.string().nullish(),
   city: z
     .string({
       required_error: "Cidade é obrigatória",
@@ -38,15 +38,15 @@ export const profileCreateSchema = z.object({
   type: z.nativeEnum(ProfileType, {
     errorMap: () => ({ message: "Tipo de perfil inválido" }),
   }),
-  cnpj: z.string().optional().nullable(),
-  cpf: z.string().optional().nullable(),
+  cnpj: z.string().nullish(),
+  cpf: z.string().nullish(),
   name: z
     .string({
       required_error: "Nome é obrigatório",
     })
     .min(1, "Nome é obrigatório"),
-  mobile: z.string().optional(),
-  phone: z.string().optional(),
+  mobile: z.string().nullish(),
+  phone: z.string().nullish(),
   email: z
     .string({
       required_error: "E-mail é obrigatório",
@@ -56,5 +56,10 @@ export const profileCreateSchema = z.object({
 });
 
 export const profileUpdateSchema = profileCreateSchema.partial().extend({
-  address: addressSchema.partial().optional(),
+  id: z.string({
+    required_error: "ID é obrigatório",
+  }),
+  address: addressSchema.partial().extend({
+    profileId: z.string().optional(),
+  }),
 });
