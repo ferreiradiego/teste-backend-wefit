@@ -1,6 +1,6 @@
-# 🚀 Desafio Wefit - API de Perfis
+# 🚀 Desafio WeFit - API de Perfis
 
-Bem-vindo ao repositório da solução do desafio backend da Wefit! Aqui você encontra uma API RESTful desenvolvida em Node.js para gerenciamento de perfis de usuários (Pessoa Física e Jurídica), incluindo seus endereços.
+Bem-vindo ao repositório da solução do desafio backend da WeFit! Aqui você encontra uma API RESTful desenvolvida em Node.js para gerenciamento de perfis de usuários (Pessoa Física e Jurídica), incluindo seus endereços.
 
 <p align="center">
   <img src="resources/form.png" alt="Formulário de Perfis" width="500"/>
@@ -90,4 +90,4 @@ Consulte exemplos e schemas completos na [documentação Swagger](http://localho
 
 ---
 
-Feito com 💙 por Diego para o desafio Wefit.
+Feito com 💙 por Diego para o desafio WeFit.
