@@ -1,4 +1,5 @@
 import { Prisma } from "@prisma/client";
+import { ERRORS } from "constants/errors";
 import { Request, Response } from "express";
 import {
   createProfile,
@@ -14,8 +15,8 @@ export const create = async (req: Request, res: Response) => {
     res.status(201).json(profile);
   } catch (err: any) {
     res
-      .status(err.status || 500)
-      .json({ error: err.message || "Erro ao cadastrar perfil!" });
+      .status(err.status || ERRORS.INTERNAL_ERROR.status)
+      .json({ error: err.message || ERRORS.INTERNAL_ERROR.message });
   }
 };
 
@@ -24,7 +25,9 @@ export const list = async (_req: Request, res: Response) => {
     const profiles = await listProfiles();
     res.status(200).json(profiles);
   } catch {
-    res.status(500).json({ error: "Erro ao listar perfis!" });
+    res
+      .status(ERRORS.INTERNAL_ERROR.status)
+      .json({ error: ERRORS.INTERNAL_ERROR.message });
   }
 };
 
@@ -37,14 +40,18 @@ export const getById = async (req: Request, res: Response) => {
       err instanceof Prisma.PrismaClientKnownRequestError &&
       err.code === "P2025"
     ) {
-      return res.status(404).json({ error: "Perfil não encontrado!" });
-    }
-    if (err.status === 404) {
       return res
-        .status(404)
-        .json({ error: err.message || "Perfil não encontrado!" });
+        .status(ERRORS.PROFILE_NOT_FOUND.status)
+        .json({ error: ERRORS.PROFILE_NOT_FOUND.message });
     }
-    res.status(500).json({ error: err.message || "Erro ao buscar perfil!" });
+    if (err.status === ERRORS.PROFILE_NOT_FOUND.status) {
+      return res
+        .status(ERRORS.PROFILE_NOT_FOUND.status)
+        .json({ error: err.message || ERRORS.PROFILE_NOT_FOUND.message });
+    }
+    res
+      .status(ERRORS.INTERNAL_ERROR.status)
+      .json({ error: err.message || ERRORS.INTERNAL_ERROR.message });
   }
 };
 
@@ -57,14 +64,18 @@ export const update = async (req: Request, res: Response) => {
       err instanceof Prisma.PrismaClientKnownRequestError &&
       err.code === "P2025"
     ) {
-      return res.status(404).json({ error: "Perfil não encontrado!" });
-    }
-    if (err.status === 404) {
       return res
-        .status(404)
-        .json({ error: err.message || "Perfil não encontrado!" });
+        .status(ERRORS.PROFILE_NOT_FOUND.status)
+        .json({ error: ERRORS.PROFILE_NOT_FOUND.message });
     }
-    res.status(500).json({ error: err.message || "Erro ao atualizar perfil!" });
+    if (err.status === ERRORS.PROFILE_NOT_FOUND.status) {
+      return res
+        .status(ERRORS.PROFILE_NOT_FOUND.status)
+        .json({ error: err.message || ERRORS.PROFILE_NOT_FOUND.message });
+    }
+    res
+      .status(ERRORS.INTERNAL_ERROR.status)
+      .json({ error: err.message || ERRORS.INTERNAL_ERROR.message });
   }
 };
 
@@ -75,9 +86,13 @@ export const remove = async (req: Request, res: Response) => {
   } catch (err) {
     if (err instanceof Prisma.PrismaClientKnownRequestError) {
       if (err.code === "P2025") {
-        return res.status(404).json({ error: "Perfil não encontrado!" });
+        return res
+          .status(ERRORS.PROFILE_NOT_FOUND.status)
+          .json({ error: ERRORS.PROFILE_NOT_FOUND.message });
       }
     }
-    res.status(500).json({ error: "Erro ao deletar perfil!" });
+    res
+      .status(ERRORS.INTERNAL_ERROR.status)
+      .json({ error: ERRORS.INTERNAL_ERROR.message });
   }
 };

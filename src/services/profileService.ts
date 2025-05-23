@@ -1,3 +1,4 @@
+import { ERRORS } from "constants/errors";
 import { ProfileDTO } from "dto/profile.dto";
 import type { z } from "zod";
 import { prisma } from "../database";
@@ -36,7 +37,11 @@ export const getProfileById = async (id: string) => {
     include: { address: true },
   });
 
-  if (!profile) throw { status: 404, message: "Perfil não encontrado!" };
+  if (!profile)
+    throw {
+      status: ERRORS.PROFILE_NOT_FOUND.status,
+      message: ERRORS.PROFILE_NOT_FOUND.message,
+    };
 
   return new ProfileDTO(profile);
 };
