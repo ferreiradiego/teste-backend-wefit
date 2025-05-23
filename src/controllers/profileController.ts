@@ -1,5 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { ERRORS } from "constants/errors";
+import { SUCCESS } from "constants/success";
 import { Request, Response } from "express";
 import {
   createProfile,
@@ -11,8 +12,11 @@ import {
 
 export const create = async (req: Request, res: Response) => {
   try {
-    const profile = await createProfile(req.body);
-    res.status(201).json(profile);
+    await createProfile(req.body);
+
+    res
+      .status(SUCCESS.PROFILE_CREATED.status)
+      .json(SUCCESS.PROFILE_CREATED.message);
   } catch (err: any) {
     res
       .status(err.status || ERRORS.INTERNAL_ERROR.status)
@@ -57,8 +61,11 @@ export const getById = async (req: Request, res: Response) => {
 
 export const update = async (req: Request, res: Response) => {
   try {
-    const profile = await updateProfile(req.params.id, req.body);
-    res.status(200).json(profile);
+    await updateProfile(req.params.id, req.body);
+
+    res
+      .status(SUCCESS.PROFILE_UPDATED.status)
+      .json(SUCCESS.PROFILE_UPDATED.message);
   } catch (err: any) {
     if (
       err instanceof Prisma.PrismaClientKnownRequestError &&
@@ -82,7 +89,10 @@ export const update = async (req: Request, res: Response) => {
 export const remove = async (req: Request, res: Response) => {
   try {
     await deleteProfile(req.params.id);
-    res.status(204).send();
+
+    res
+      .status(SUCCESS.PROFILE_DELETED.status)
+      .json(SUCCESS.PROFILE_DELETED.message);
   } catch (err) {
     if (err instanceof Prisma.PrismaClientKnownRequestError) {
       if (err.code === "P2025") {
