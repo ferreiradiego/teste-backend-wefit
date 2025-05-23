@@ -6,27 +6,11 @@ import { profileCreateSchema } from "../schemas/profileSchema";
 export const createProfile = async (
   data: z.infer<typeof profileCreateSchema>
 ) => {
-  const { type, cnpj, cpf, name, mobile, phone, email, address } = data;
-
-  if (!Object.values(ProfileType).includes(type)) {
-    throw { status: 400, message: "Tipo de perfil inválido!" };
-  }
-
-  if (!address) {
-    throw { status: 400, message: "Endereço é obrigatório!" };
-  }
-
   return prisma.profile.create({
     data: {
-      type,
-      cnpj,
-      cpf,
-      name,
-      mobile,
-      phone,
-      email,
+      ...data,
       address: {
-        create: address,
+        create: data.address,
       },
     },
     include: { address: true },
@@ -47,10 +31,6 @@ export const getProfileById = async (id: string) => {
 };
 
 export const updateProfile = async (id: string, data: any) => {
-  const { type } = data;
-  if (type && !Object.values(ProfileType).includes(type)) {
-    throw { status: 400, message: "Tipo de perfil inválido!" };
-  }
   return prisma.profile.update({
     where: { id },
     data: {

@@ -38,8 +38,8 @@ export const profileCreateSchema = z.object({
   type: z.nativeEnum(ProfileType, {
     errorMap: () => ({ message: "Tipo de perfil inválido" }),
   }),
-  cnpj: z.string().optional(),
-  cpf: z.string().optional(),
+  cnpj: z.string().optional().nullable(),
+  cpf: z.string().optional().nullable(),
   name: z
     .string({
       required_error: "Nome é obrigatório",
