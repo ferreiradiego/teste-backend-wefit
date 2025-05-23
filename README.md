@@ -21,7 +21,7 @@ Bem-vindo ao repositório da solução do desafio backend da Wefit! Aqui você e
 1. **Clone o repositório**
 
    ```sh
-   git clone https://github.com/seu-usuario/seu-repo.git
+   git clone https://github.com/ferreiradiego/teste-backend-wefit.git
    cd teste-backend
    ```
 
