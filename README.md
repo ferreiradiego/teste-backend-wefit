@@ -1,19 +1,81 @@
-## Backend - Wefit
+# 🚀 Desafio Wefit - API de Perfis
 
-Seja bem vindo ao teste de backend da Wefit.
+Bem-vindo ao repositório da solução do desafio backend da Wefit! Aqui você encontra uma API RESTful desenvolvida em Node.js para gerenciamento de perfis de usuários (Pessoa Física e Jurídica), incluindo seus endereços.
 
-### Para iniciar o banco de dados é necessario ter o docker-compose instalado em sua máquina e rodar o seguinte comando:
+<p align="center">
+  <img src="resources/form.png" alt="Formulário de Perfis" width="500"/>
+</p>
 
-    docker-compose up -D
+## 🛠️ Tecnologias Utilizadas
 
-o docker-compose vai criar um container de um MySQL e você poderá acessar via localhost:3306 e a senha do usuário **root** é **senha_root_123**
+- **Node.js** & **Express** — Backend e roteamento HTTP
+- **TypeScript** — Tipagem estática para maior segurança
+- **Prisma ORM** — Mapeamento objeto-relacional com MySQL
+- **MySQL** — Banco de dados relacional
+- **Zod** — Validação de dados e schemas
+- **Swagger** — Documentação interativa da API
+- **Docker** & **docker-compose** — Ambiente de desenvolvimento e banco de dados
 
-### Para iniciar o servidor express basta executar o seguinte comando:
+## 📦 Como rodar o projeto
 
-    npm start
-    ou
-    yarn start
+1. **Clone o repositório**
+   ```sh
+   git clone https://github.com/seu-usuario/seu-repo.git
+   cd teste-backend
+   ```
 
-Depois que concluir seu teste não de enviar o seu código junto a pasta data, nela está salvo o volume do MySQL criado pelo docker.
+2. **Configure as variáveis de ambiente**
+   - Copie `.env.example` para `.env` e ajuste se necessário.
 
-Boa sorte =)
+3. **Suba o banco de dados com Docker**
+   ```sh
+   docker-compose up -d
+   ```
+
+4. **Instale as dependências**
+   ```sh
+   npm install
+   ```
+
+5. **Execute as migrations do Prisma**
+   ```sh
+   npx prisma migrate deploy
+   ```
+
+6. **Inicie a aplicação**
+   ```sh
+   npm start
+   ```
+
+7. **Acesse a documentação Swagger**
+   - [http://localhost:4568/docs](http://localhost:4568/docs)
+
+## 🧪 Como testar
+
+- Utilize o endpoint `/ping` para verificar se a API está no ar.
+- Todos os endpoints de perfis estão documentados no Swagger.
+- Para testar via terminal, utilize ferramentas como [HTTPie](https://httpie.io/) ou [curl](https://curl.se/):
+
+```sh
+http POST http://localhost:4568/perfis type=INDIVIDUAL name="João" email="joao@email.com" address:='{"zipCode":"12345678","street":"Rua A","number":"10","city":"SP","district":"Centro","state":"SP"}'
+```
+
+## 📚 Endpoints principais
+
+- `POST /perfis` — Cria um novo perfil
+- `GET /perfis` — Lista todos os perfis
+- `GET /perfis/{id}` — Busca perfil por ID
+- `PUT /perfis/{id}` — Atualiza perfil
+- `DELETE /perfis/{id}` — Remove perfil
+
+Consulte exemplos e schemas completos na [documentação Swagger](http://localhost:4568/docs).
+
+## 💡 Observações
+
+- O projeto utiliza validação robusta com Zod para garantir integridade dos dados.
+- O banco de dados é inicializado via Docker para facilitar o setup.
+- O código está modularizado em controllers, services, DTOs e schemas para facilitar manutenção e testes.
+
+---
+
+Feito com 💙 por Diego para o desafio Wefit.
