@@ -269,7 +269,7 @@ export default router;
  * @swagger
  * components:
  *   schemas:
- *     Profile:
+ *     Perfil:
  *       type: object
  *       properties:
  *         id:
@@ -290,8 +290,8 @@ export default router;
  *         email:
  *           type: string
  *         address:
- *           $ref: '#/components/schemas/Address'
- *     Address:
+ *           $ref: '#/components/schemas/Endereco'
+ *     Endereco:
  *       type: object
  *       properties:
  *         id:
