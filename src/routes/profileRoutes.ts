@@ -6,6 +6,8 @@ import {
   remove,
   update,
 } from "../controllers/profileController";
+import { validate } from "../middleware/validate";
+import { profileCreateSchema, profileUpdateSchema } from "../schemas/profileSchema";
 
 const router = Router();
 
@@ -128,7 +130,7 @@ const router = Router();
  *             example:
  *               error: "Tipo de perfil inválido!"
  */
-router.post("/", create);
+router.post("/", validate(profileCreateSchema), create);
 
 /**
  * @swagger
@@ -231,7 +233,7 @@ router.get("/:id", getById);
  *             example:
  *               error: "Perfil não encontrado!"
  */
-router.put("/:id", update);
+router.put("/:id", validate(profileUpdateSchema), update);
 
 /**
  * @swagger

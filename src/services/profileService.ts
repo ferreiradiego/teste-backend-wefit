@@ -1,7 +1,11 @@
+import { ProfileType } from "@prisma/client";
+import type { z } from "zod";
 import { prisma } from "../database";
-import { ProfileType, type Prisma } from "@prisma/client";
+import { profileCreateSchema } from "../schemas/profileSchema";
 
-export const createProfile = async (data: Prisma.ProfileCreateInput) => {
+export const createProfile = async (
+  data: z.infer<typeof profileCreateSchema>
+) => {
   const { type, cnpj, cpf, name, mobile, phone, email, address } = data;
 
   if (!Object.values(ProfileType).includes(type)) {
@@ -21,7 +25,9 @@ export const createProfile = async (data: Prisma.ProfileCreateInput) => {
       mobile,
       phone,
       email,
-      address,
+      address: {
+        create: address,
+      },
     },
     include: { address: true },
   });
