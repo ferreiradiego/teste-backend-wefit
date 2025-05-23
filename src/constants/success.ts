@@ -14,4 +14,4 @@ export const SUCCESS = {
     message: "Perfil deletado com sucesso!",
     status: 204,
   },
-};
+} as const;

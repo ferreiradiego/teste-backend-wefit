@@ -90,9 +90,7 @@ export const remove = async (req: Request, res: Response) => {
   try {
     await deleteProfile(req.params.id);
 
-    res
-      .status(SUCCESS.PROFILE_DELETED.status)
-      .json(SUCCESS.PROFILE_DELETED.message);
+    res.status(SUCCESS.PROFILE_DELETED.status).send();
   } catch (err) {
     if (err instanceof Prisma.PrismaClientKnownRequestError) {
       if (err.code === "P2025") {

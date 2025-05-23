@@ -19,4 +19,4 @@ export const ERRORS = {
     message: "Erro interno do servidor!",
     status: 500,
   },
-};
+} as const;
