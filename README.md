@@ -19,35 +19,47 @@ Bem-vindo ao repositório da solução do desafio backend da Wefit! Aqui você e
 ## 📦 Como rodar o projeto
 
 1. **Clone o repositório**
+
    ```sh
    git clone https://github.com/seu-usuario/seu-repo.git
    cd teste-backend
    ```
 
 2. **Configure as variáveis de ambiente**
+
    - Copie `.env.example` para `.env` e ajuste se necessário.
 
 3. **Suba o banco de dados com Docker**
+
    ```sh
    docker-compose up -d
    ```
 
 4. **Instale as dependências**
+
    ```sh
    npm install
    ```
 
-5. **Execute as migrations do Prisma**
+5. **Gere o client do Prisma**
+
+   ```sh
+   npx prisma generate
+   ```
+
+6. **Execute as migrations do Prisma**
+
    ```sh
    npx prisma migrate deploy
    ```
 
-6. **Inicie a aplicação**
+7. **Inicie a aplicação**
+
    ```sh
    npm start
    ```
 
-7. **Acesse a documentação Swagger**
+8. **Acesse a documentação Swagger**
    - [http://localhost:4568/docs](http://localhost:4568/docs)
 
 ## 🧪 Como testar
