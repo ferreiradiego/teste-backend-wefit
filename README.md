@@ -22,7 +22,7 @@ Bem-vindo ao repositório da solução do desafio backend da WeFit! Aqui você e
 
    ```sh
    git clone https://github.com/ferreiradiego/teste-backend-wefit.git
-   cd teste-backend
+   cd teste-backend-wefit
    ```
 
 2. **Configure as variáveis de ambiente**
